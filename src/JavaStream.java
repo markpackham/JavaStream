@@ -66,5 +66,25 @@ public class JavaStream {
         List<String> bands2 = Files.lines(Paths.get("bands.txt")).filter(x -> x.contains("jit")).collect(Collectors.toList());
         // prints "Arijit Singh"
         bands2.forEach(x -> System.out.println(x));
+
+
+        // Stream rows from CSV file and count
+        Stream<String> rowsToCount = Files.lines(Paths.get("data.txt"));
+        int rowCount = (int)rowsToCount.map(x -> x.split(",")).filter(x -> x.length == 3).count();
+        // prints "5 rows."
+        System.out.println(rowCount + " rows.");
+        rowsToCount.close();
+
+
+        // Stream rows from CSV file, parse data from rows
+        Stream<String> rows2 = Files.lines(Paths.get("data.txt"));
+        rows2.map(x -> x.split(",")).filter(x -> x.length == 3)
+                .filter(x -> Integer.parseInt(x[1]) > 17)
+                /*
+                D  23  2.7
+                F  18  3.4
+                 */
+                .forEach(x -> System.out.println(x[0] + "  " + x[1] + "  " + x[2]));
+        rows2.close();
     }
 }
