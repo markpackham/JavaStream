@@ -9,7 +9,7 @@ import java.io.IOException;
 
 // Learn Stream in Java 8 from https://www.youtube.com/watch?v=t1-YZ6bF-g0
 public class JavaStream {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // Int Stream
         IntStream.range(1, 10).forEach(System.out::print);
         // prints 123456789
@@ -52,7 +52,19 @@ public class JavaStream {
         List<String> people = Arrays.asList("Al", "Ankit", "Brent", "Sarika", "amanda", "Hans", "Shivika", "Sarah");
         // prints alankitamanda
         people.stream().map(String::toLowerCase).filter(x -> x.startsWith("a")).forEach(System.out::print);
+        System.out.println();
+
+        // Stream rows from text file, sort, filter, and print
+        // files stored in root directory
+        Stream<String> bands = Files.lines(Paths.get("bands.txt"));
+        // prints "Mumford and Sons"
+        bands.sorted().filter(x -> x.length() > 15).forEach(System.out::println);
+        bands.close();
 
 
+        // Stream rows from text file and save to List
+        List<String> bands2 = Files.lines(Paths.get("bands.txt")).filter(x -> x.contains("jit")).collect(Collectors.toList());
+        // prints "Arijit Singh"
+        bands2.forEach(x -> System.out.println(x));
     }
 }
